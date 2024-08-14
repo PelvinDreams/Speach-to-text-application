@@ -42,3 +42,38 @@ h2{
   background: linear-gradient(168deg, #ff9a9a, #fad0c4);
   border-radius: 3px;
 }
+
+.button-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+button{
+  font-size: 20px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: indigo;
+  color: #fff;
+  outline: none;
+  border: none;
+  animation: pulse 1.5s infinite alternate;
+  cursor: pointer;
+}
+
+button:hover{
+  background-color: darkblue;
+}
+
+@keyframes pulse {
+
+  from{
+transform: scale(1);
+  }
+
+  to{
+transform: scale(1.1);
+  }
+}
