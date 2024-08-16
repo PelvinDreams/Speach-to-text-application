@@ -1,82 +1,58 @@
-
 const resultElement = document.getElementById("result");
-// the variable to be updating
+// The variable to be updating
 let recognition;
 
-
 function startConverting() {
-if('webkitSpeechRecognition' in window) {
-    recognition  = new webkitSpeechRecognition();
+    if ('webkitSpeechRecognition' in window) {
+        recognition = new webkitSpeechRecognition();
 
-    setupRecognition(recognition);
-    // starting up the recognition
-    recognition.start();
+        setupRecognition(recognition);
+        // Start recognition
+        recognition.start();
+    }
 }
 
-// they are 2 types of recognition 
-// 1. Intrim Results= listen the result
-// 2. Final Results= displays the data inside the filed  element
-
 function setupRecognition(recognition) {
-     
     recognition.continuous = true;
 
-    // enabling the recognition in a bash/ this is going to be listening to the voice and also will be displaying 
-    // the data and text to be diisplayed
+    // Enabling interim results to display text as the user speaks
     recognition.interimResults = true;
 
     recognition.lang = 'en-US';
 
     recognition.onresult = function(event) {
-        // processResult function will be called here.
+        // Call processResult function to handle the event results
+        const { finalTranscript, interTranscript } = processResult(event.results);
 
-        const {finalTranscript, interTranscript} = 
-        // this function is going to accept our para meters (event)
-        processResult(event.results)
-
-        
         resultElement.innerHTML = finalTranscript + interTranscript;
-       
     }
 }
 
-
 function processResult(results) {
-
-    let finalTranscript =  '';
+    let finalTranscript = '';
     let interTranscript = '';
 
-
-    // for each will make it more complicated
-    for(let i = 0 ; i< results.length; i++) {
-                                      
-                                    //   get the refrence by specifying the zero
+    for (let i = 0; i < results.length; i++) {
+        // Get the transcript of the current result
         let transcript = results[i][0].transcript;
-        transcript.replace("\n", "<br>");
 
+        // Replace newline characters with <br>
+        transcript = transcript.replace(/\n/g, "<br>");
 
-        // to get the data when the user is speaking
-        if(results[i].isFinal){
-
-            // we need to concatenate it
-          finalTranscript += transcript;
-
-        }else{
-            // we need to concatenate it
-          interTranscript += transcript;
+        // Determine if the result is final or interim
+        if (results[i].isFinal) {
+            finalTranscript += transcript;
+        } else {
+            interTranscript += transcript;
         }
     }
 
-    return {finalTranscript, interTranscript}
+    return { finalTranscript, interTranscript };
 }
-
- 
 
 function stopConverting() {
-    // check is the speech is true
-    if(recognition){
+    // Check if recognition is active and stop it
+    if (recognition) {
         recognition.stop();
     }
-
-}
 }
