@@ -73,6 +73,10 @@ function processResult(results) {
  
 
 function stopConverting() {
+    // check is the speech is true
+    if(recognition){
+        recognition.stop();
+    }
 
 }
 }
