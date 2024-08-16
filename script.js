@@ -30,8 +30,13 @@ function setupRecognition(recognition) {
     recognition.onresult = function(event) {
         // processResult function will be called here.
 
+        const {finalTranscript, interTranscript} = 
         // this function is going to accept our para meters (event)
         processResult(event.results)
+
+        
+        resultElement.innerHTML = finalTranscript + interTranscript;
+       
     }
 }
 
@@ -46,13 +51,23 @@ function processResult(results) {
     for(let i = 0 ; i< results.length; i++) {
                                       
                                     //   get the refrence by specifying the zero
-        let transscript = results[i][0].transscript;
-        transscript.replace("\n", "<br>");
+        let transcript = results[i][0].transcript;
+        transcript.replace("\n", "<br>");
 
 
         // to get the data when the user is speaking
+        if(results[i].isFinal){
+
+            // we need to concatenate it
+          finalTranscript += transcript;
+
+        }else{
+            // we need to concatenate it
+          interTranscript += transcript;
+        }
     }
 
+    return {finalTranscript, interTranscript}
 }
 
  
